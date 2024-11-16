@@ -1,0 +1,39 @@
+name: Tfsec
+
+on:
+  workflow_run:
+    workflows: ["Terraform"]
+    types:
+      - completed
+
+jobs:
+  tfsec-job:
+    runs-on: ubuntu-latest
+    name: Tfsec
+    permissions:
+      contents: read
+      security-events: write
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Mkdir tfsec
+        run: mkdir tfsecres
+
+      ############## Version 1 ##############
+      #- name: Run Tfsec
+      #  uses: aquasecurity/tfsec-action@v1.0.0
+      #  with:
+      #    working_directory: 'iac'
+      #    soft_fail: true
+      #    format: sarif
+      #    additional_args: --out tfsecres/results.sarif --tfvars-file iac/terraform.tfvars
+      #
+      #- name: Output tfsec findings
+      #  run: cat tfsecres/results.sarif
+      #
+      #- name: Upload Tfsec findings
+      #  uses: github/codeql-action/upload-sarif@v2
+      #  with: 
+      #    sarif_file: tfsecres/results.sarif
+      ########################################
